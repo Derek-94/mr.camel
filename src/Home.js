@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Products from './Components/Products';
 
 export default class Home extends Component {
   render() {
@@ -17,6 +18,7 @@ export default class Home extends Component {
             <Link to="/recentList">상품 조회 이력 페이지</Link>
           </li>
         </ul>
+        <Products />
       </>
     );
   }

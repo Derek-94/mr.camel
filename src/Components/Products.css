@@ -1,0 +1,56 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 80%;
+  margin: 0 auto;
+  grid-gap: 20px;
+}
+
+h3 {
+  text-align: center;
+}
+
+.top {
+  width: 80%;
+  padding: 1em;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.product {
+  height: 25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.product:hover {
+  transform: translateY(-8px);
+  transition: all 0.2s linear;
+}
+
+.product-image {
+  background-color: rgb(199, 228, 253);
+  height: 65%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.product-image i {
+  font-size: 3rem;
+}
+
+.product-details {
+  height: 35%;
+}
+
+.product-details div {
+  display: flex;
+  justify-content: space-between;
+}
+
+h4 {
+  padding-top: 10px;
+}
