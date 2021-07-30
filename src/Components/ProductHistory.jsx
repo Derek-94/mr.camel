@@ -8,12 +8,30 @@ export default class ProductHistory extends Component {
     this.state = {
       productHistory: JSON.parse(localStorage.getItem('productHistory')) || [],
       brandSelected: [],
+      ignoreFlag: false,
     };
   }
 
-  shouldComponentUpdate() {
-    // 만약 this.state의 brandSelected가 이전과 달랄졌다면, return true
+  shouldComponentUpdate(nextState) {
+    if (this.state.productHistory !== nextState.productHistory) {
+      return true;
+    }
   }
+
+  onClickIgnoreBox = () => {
+    const { ignoreFlag, productHistory } = this.state;
+    if (!ignoreFlag) {
+      this.setState({
+        productHistory: productHistory.filter(product => !product.ignore),
+        ignoreFlag: true,
+      });
+    } else {
+      this.setState({
+        productHistory: JSON.parse(localStorage.getItem('productHistory')),
+        ignoreFlag: false,
+      });
+    }
+  };
 
   render() {
     const { productHistory } = this.state;
@@ -36,7 +54,7 @@ export default class ProductHistory extends Component {
           </div>
           <div>
             <label>
-              <input type="checkbox" name="ignore" value="ignore" />
+              <input onClick={this.onClickIgnoreBox} type="checkbox" name="ignore" value="ignore" />
               관심없는 제품 제외하기
             </label>
           </div>
@@ -48,11 +66,12 @@ export default class ProductHistory extends Component {
         {productHistory ? (
           <div>
             <h2>여기에 이제 렌더링 할거에요!</h2>
-            {productHistory.map(product => (
-              <div style={{ margin: '1rem 0' }}>
+            {productHistory.map((product, index) => (
+              <div key={index} style={{ margin: '1rem 0' }}>
                 <div>상품명: {product.title}</div>
                 <div>브랜드: {product.brand}</div>
                 <div>가격: {product.price}</div>
+                <div>{product.ignore ? `관심없음` : `관심있음`}</div>
               </div>
             ))}
           </div>
