@@ -17,7 +17,6 @@ export default class ProductHistory extends Component {
 
   render() {
     const { productHistory } = this.state;
-    console.log(productHistory);
 
     return (
       <>
