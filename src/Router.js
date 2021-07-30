@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 
+import Home from './Home';
+import ProductHistory from './Components/ProductHistory';
+
 class Router extends Component {
   render() {
     return (
       <div>
-        <h1>Hello world!</h1>
-        {/* <Route exact path="/" component={} />
-        <Route path="/product" component={} />
-        <Route path="/recentList" component={} /> */}
+        <Route exact path="/" component={Home} />
+        <Route path="/product" exact component={Home} />
+        <Route path="/recentList" component={ProductHistory} />
       </div>
     );
   }
