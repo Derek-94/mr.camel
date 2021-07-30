@@ -6,41 +6,40 @@ export default class ProductHistory extends Component {
     localStorage.setItem('productHistory', JSON.stringify(tmp));
 
     this.state = {
-      productHistory: JSON.parse(localStorage.getItem('productHistory')) || [],
+      productHistoryOrigin: JSON.parse(localStorage.getItem('productHistory')) || [],
+      productHistoryModified: [],
       brandSelected: [],
       ignoreFlag: false,
     };
   }
 
   shouldComponentUpdate(nextState) {
-    if (this.state.productHistory !== nextState.productHistory) {
+    if (this.state.productHistoryModified !== nextState.productHistoryModified) {
       return true;
     }
   }
 
   onClickIgnoreBox = () => {
-    const { ignoreFlag, productHistory } = this.state;
+    const { ignoreFlag, productHistoryOrigin } = this.state;
     if (!ignoreFlag) {
       this.setState({
-        productHistory: productHistory.filter(product => !product.ignore),
+        productHistoryModified: productHistoryOrigin.filter(product => !product.ignore),
         ignoreFlag: true,
       });
     } else {
       this.setState({
-        productHistory: JSON.parse(localStorage.getItem('productHistory')),
+        productHistoryModified: productHistoryOrigin,
         ignoreFlag: false,
       });
     }
   };
 
   render() {
-    const { productHistory } = this.state;
-
+    const { productHistoryOrigin, productHistoryModified } = this.state;
     return (
       <>
         <h1>사용자 상품 조회 이력</h1>
         <section>
-          {/* 브랜드, 노관심, 최신순, 낮은가격 */}
           <div>
             브랜드
             <label>
@@ -63,20 +62,37 @@ export default class ProductHistory extends Component {
             <option>낮은 가격</option>
           </select>
         </section>
-        {productHistory ? (
+        {productHistoryModified.length ? (
           <div>
-            <h2>여기에 이제 렌더링 할거에요!</h2>
-            {productHistory.map((product, index) => (
+            <h2>상품</h2>
+            {productHistoryModified.map((product, index) => (
               <div key={index} style={{ margin: '1rem 0' }}>
                 <div>상품명: {product.title}</div>
                 <div>브랜드: {product.brand}</div>
                 <div>가격: {product.price}</div>
                 <div>{product.ignore ? `관심없음` : `관심있음`}</div>
+                <hr />
               </div>
             ))}
           </div>
         ) : (
-          <h2>사용자가 아무것도 보질 않았어요!</h2>
+          ``
+        )}
+        {productHistoryOrigin.length && !productHistoryModified.length ? (
+          <div>
+            <h2>상품</h2>
+            {productHistoryOrigin.map((product, index) => (
+              <div key={index} style={{ margin: '1rem 0' }}>
+                <div>상품명: {product.title}</div>
+                <div>브랜드: {product.brand}</div>
+                <div>가격: {product.price}</div>
+                <div>{product.ignore ? `관심없음` : `관심있음`}</div>
+                <hr />
+              </div>
+            ))}
+          </div>
+        ) : (
+          !productHistoryModified.length && <h2>사용자가 아무것도 보질 않았어요!</h2>
         )}
       </>
     );
