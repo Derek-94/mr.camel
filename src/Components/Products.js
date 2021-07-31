@@ -6,27 +6,9 @@ import './Products.css';
 class Products extends Component {
   constructor(props) {
     super(props);
-
-    // add id to mockData
-    let iterator = 1;
-    function addIdentifier(target) {
-      target.id = iterator;
-      iterator++;
+    for (let i = 0; i < mockData.length; i++) {
+      mockData[i].id = i;
     }
-
-    function loop(obj) {
-      for (let i in obj) {
-        let j = obj[i];
-        if (typeof j === 'object') {
-          if (j.length === undefined) {
-            addIdentifier(j);
-          }
-          loop(j);
-        }
-      }
-    }
-
-    loop(mockData);
   }
 
   render() {
@@ -49,7 +31,6 @@ class Products extends Component {
               }}
               key={data.title}
             >
-              {/* <Link to={`/product/${data.id}`} key={data.title}> */}
               <article key={data.title}>
                 <div className="product-image">
                   <i className="tags icon"></i>

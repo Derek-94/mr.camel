@@ -11,12 +11,13 @@ export default class Product extends Component {
     return (
       <article>
         <div>
-          <h4>
-            id: {id} {title}
-          </h4>
-          <h4>{brand}</h4>
-          <h4>{price}</h4>
+          <i className="tags icon"></i>
         </div>
+        <h4>
+          id: {id} {title}
+        </h4>
+        <h4>{brand}</h4>
+        <h4>{price}</h4>
       </article>
     );
   }
