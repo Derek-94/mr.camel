@@ -10,26 +10,30 @@ export default class Product extends Component {
     this.gotoRecentHistory = this.gotoRecentHistory.bind(this);
   }
 
-  getRandomValue() {
-    let random = getRandomNumber(0, this.props.productData.length);
+  getRandomValue(len) {
+    let random = getRandomNumber(0, len);
     return random;
   }
 
   callRandomProduct() {
-    let random = this.getRandomValue();
-    const nowProduct = this.props.productData.find(item => item.id === random);
-    nowProduct.ignore = false;
+    this.getNewItem(true);
+  }
+
+  getNewItem(isIgnore) {
+    const ignoreList = this.props.recentProducts.filter(item => item.ignore).map(item => item.id);
+    ignoreList.push(this.props.match.params.id);
+    const productList = this.props.productData.filter(
+      item => !ignoreList.find(ignoreItem => ignoreItem.id === item.id),
+    );
+    let random = this.getRandomValue(productList.length);
+    const nowProduct = productList[random];
+    nowProduct.ignore = isIgnore;
     this.props.addRecentHistory(nowProduct);
     this.props.history.push(`/product/${random}`);
   }
 
   setIgnore() {
-    let random = this.getRandomValue();
-
-    const nowProduct = this.props.productData.find(item => item.id === random);
-    nowProduct.ignore = true;
-    this.props.addRecentHistory(nowProduct);
-    this.props.history.push(`/product/${random}`);
+    this.getNewItem(false);
   }
 
   gotoRecentHistory() {

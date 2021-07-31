@@ -44,6 +44,7 @@ class Router extends Component {
             <Product
               {...props}
               productData={this.state.productData}
+              recentProducts={this.state.recentProducts}
               addRecentHistory={this.addRecentHistory}
             />
           )}
