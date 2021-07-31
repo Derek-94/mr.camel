@@ -40,7 +40,16 @@ class Products extends Component {
         </header>
         <section className="container">
           {mockData.map(data => (
-            <Link to={`/product/${data.id}`} key={data.title}>
+            <Link
+              to={{
+                pathname: `/product/${data.id}`,
+                state: {
+                  data,
+                },
+              }}
+              key={data.title}
+            >
+              {/* <Link to={`/product/${data.id}`} key={data.title}> */}
               <article key={data.title}>
                 <div className="product-image">
                   <i className="tags icon"></i>
