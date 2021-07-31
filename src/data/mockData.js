@@ -67,7 +67,7 @@ const mockData = [
   },
   { title: '나이키 정품 우븐플로우 쇼츠 M사이즈', brand: '나이키', price: 40000 },
   { title: '나이키 트랙자켓 (s)', brand: '나이키', price: 175000 },
-  { title: '(풀구성', brand: '정품M)구찌 로고 후드티', price: '구찌' },
+  { title: '(풀구성 정품M)구찌 로고 후드티', brand: '구찌', price: '29000' },
   { title: '정품)구찌 꿀벌 지퍼장지갑', brand: '구찌', price: 480000 },
   { title: '$압도적$나이키 빅스우시 메쉬 포인트 5부셋트', brand: '나이키', price: 89000 },
   { title: '(한정판) 나이키 빅스우시 아노락 우븐 세트', brand: '나이키', price: 550000 },
