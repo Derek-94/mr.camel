@@ -1,0 +1,27 @@
+.content-container {
+  display: flex;
+  padding: 1em;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-img {
+  width: 30em;
+  height: 30em;
+  background-color: plum;
+  border-radius: 10px;
+  padding: 1em;
+}
+
+.content-info {
+  padding: 1em;
+  margin: 1em;
+}
+
+.product-btn {
+  border: none;
+  border-radius: 10px;
+  background-color: plum;
+  padding: 1em;
+  margin: 1em;
+}
