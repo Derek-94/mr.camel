@@ -7,36 +7,59 @@ export default class ProductHistory extends Component {
     localStorage.setItem('productHistory', JSON.stringify(tmp));
 
     this.state = {
-      productHistory: JSON.parse(localStorage.getItem('productHistory')) || [],
-      allBrand: [],
+      productHistoryOrigin: JSON.parse(localStorage.getItem('productHistory')) || [],
+      productHistoryModified: [],
+      ignoreFlag: false,
       checkedBrand: [],
+      allBrand: [],
     };
   }
 
   componentDidMount() {
-    //브랜드 리스트 배열 (중복X)
     const setBrandList = () => {
-      const hi = mockData.map(el => {
-        return el.brand;
+      const sortBrand = mockData.map(brands => {
+        return brands.brand;
       });
-      const set = new Set(hi);
-      const setBrand = [...set];
+      const brandsArr = new Set(sortBrand);
+      const brandList = [...brandsArr];
       this.setState({
-        allBrand: setBrand,
+        allBrand: brandList,
       });
     };
     setBrandList();
   }
 
-  // 체크박스 전체 선택
+  shouldComponentUpdate(nextState) {
+    if (this.state.productHistoryModified !== nextState.productHistoryModified) {
+      return true;
+    }
+    if (this.state.checkedBrand !== nextState.checkedBrand) {
+      return true;
+    }
+  }
+
+  onClickIgnoreBox = () => {
+    const { ignoreFlag, productHistoryOrigin } = this.state;
+    if (!ignoreFlag) {
+      this.setState({
+        productHistoryModified: productHistoryOrigin.filter(product => !product.ignore),
+        ignoreFlag: true,
+      });
+    } else {
+      this.setState({
+        productHistoryModified: productHistoryOrigin,
+        ignoreFlag: false,
+      });
+    }
+  };
+
   handleAllCheck = e => {
-    const { allBrand } = this.state;
-    // 전체 체크하기
-    if (e.target.checked === true) {
+    const { allBrand, productHistoryOrigin } = this.state;
+    if (e.target.checked) {
       this.setState({
         checkedBrand: allBrand,
+        productHistoryModified: productHistoryOrigin,
       });
-      // 전체 체크 해제
     } else {
       this.setState({
         checkedBrand: [],
@@ -44,34 +67,36 @@ export default class ProductHistory extends Component {
     }
   };
 
-  //  체크박스 브랜드 별 선택
   handleSingleCheck = e => {
-    const { checkedBrand } = this.state;
+    const { checkedBrand, productHistoryModified, productHistoryOrigin } = this.state;
 
-    // 개별 체크하기
-    if (e.target.checked === true) {
+    if (productHistoryModified.length === 0) {
+      this.setState({
+        productHistoryModified: productHistoryOrigin,
+      });
+    }
+
+    if (e.target.checked) {
       this.setState({
         checkedBrand: [...checkedBrand, e.target.value],
       });
-      // 개별 체크 해제
     } else {
       const unCheck = e.target.value;
       this.setState({
-        checkedBrand: checkedBrand.filter(el => el !== unCheck),
+        checkedBrand: checkedBrand.filter(brand => brand !== unCheck),
       });
     }
   };
 
   render() {
-    const { allBrand, productHistory, checkedBrand } = this.state;
-
+    const { allBrand, checkedBrand, productHistoryOrigin, productHistoryModified } = this.state;
     return (
       <>
         <h1>사용자 상품 조회 이력</h1>
         <section>
-          <div>
+          <div className="check_brand">
             브랜드
-            <label className="seletAll">
+            <label className="check_all">
               <input
                 checked={checkedBrand === allBrand ? true : false}
                 onChange={e => this.handleAllCheck(e)}
@@ -82,9 +107,8 @@ export default class ProductHistory extends Component {
               전체 브랜드
             </label>
             {allBrand.map((el, idx) => {
-              console.log(`checkedBrand = ${checkedBrand}`);
               return (
-                <label className="seletEach">
+                <label className="check_each">
                   <input
                     checked={checkedBrand.includes(allBrand[idx]) ? true : false}
                     onChange={e => this.handleSingleCheck(e)}
@@ -100,29 +124,52 @@ export default class ProductHistory extends Component {
 
           <div>
             <label>
-              <input type="checkbox" name="ignore" value="ignore" />
+              <input onClick={this.onClickIgnoreBox} type="checkbox" name="ignore" value="ignore" />
               관심없는 제품 제외하기
             </label>
           </div>
+
           <select>
             <option>최신순</option>
             <option>낮은 가격</option>
           </select>
         </section>
-        {/* checkedBrand */}
-        {productHistory ? (
+
+        {productHistoryModified.length ? (
           <div>
-            <h2>여기에 이제 렌더링 할거에요!</h2>
-            {productHistory.map(product => (
-              <div style={{ margin: '1rem 0' }}>
+            <h2>상품</h2>
+            {productHistoryModified.map((product, index) => {
+              return (
+                checkedBrand.includes(product.brand) && (
+                  <div key={index} style={{ margin: '1rem 0' }}>
+                    <div>상품명: {product.title}</div>
+                    <div>브랜드: {product.brand}</div>
+                    <div>가격: {product.price}</div>
+                    <div>{product.ignore ? `관심없음` : `관심있음`}</div>
+                    <hr />
+                  </div>
+                )
+              );
+            })}
+          </div>
+        ) : (
+          ``
+        )}
+        {productHistoryOrigin.length && !productHistoryModified.length ? (
+          <div>
+            <h2>상품</h2>
+            {productHistoryOrigin.map((product, index) => (
+              <div key={index} style={{ margin: '1rem 0' }}>
                 <div>상품명: {product.title}</div>
                 <div>브랜드: {product.brand}</div>
                 <div>가격: {product.price}</div>
+                <div>{product.ignore ? `관심없음` : `관심있음`}</div>
+                <hr />
               </div>
             ))}
           </div>
         ) : (
-          <h2>사용자가 아무것도 보질 않았어요!</h2>
+          !productHistoryModified.length && <h2>사용자가 아무것도 보질 않았어요!</h2>
         )}
       </>
     );
