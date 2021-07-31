@@ -1,6 +1,6 @@
 export const getProductData = async () => {
   try {
-    const data = await fetch('product_data.json');
+    const data = await fetch('../public/products.json');
     const jsonData = await data.json();
     return jsonData;
   } catch (e) {

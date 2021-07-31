@@ -1,19 +1,38 @@
 import React, { Component } from 'react';
 import './Product.css';
-import { getProductData } from '../utils';
+import { getProductData, getRandomNumber } from '../utils';
 
 export default class Product extends Component {
-  //constructor(props) {
-  //  super(props);
-  //  //(async () => {
-  //  //  const data = await getProductData();
-  //  //  console.log(data);
-  //  //})();
-  //}
+  constructor(props) {
+    super(props);
+    this.callRandomProduct = this.callRandomProduct.bind(this);
+    this.setIgnore = this.setIgnore.bind(this);
+    this.gotoRecentHistory = this.gotoRecentHistory.bind(this);
+  }
 
-  //callRandomProduct() {}
+  getRandomValue() {
+    let random = getRandomNumber(0, this.props.productData.length);
+    return random;
+  }
 
-  //setIgnore() {}
+  callRandomProduct() {
+    let random = this.getRandomValue();
+    const nowProduct = this.props.productData.find(item => item.id === random);
+    this.props.addRecentHistory(nowProduct);
+    this.props.history.push(`/product/${random}`);
+  }
+
+  setIgnore() {
+    let random = this.getRandomValue();
+
+    const nowProduct = this.props.productData.find(item => item.id === random);
+    this.props.addRecentHistory(nowProduct);
+    this.props.history.push(`/product/${random}`);
+  }
+
+  gotoRecentHistory() {
+    this.props.history.push(`/recentList`);
+  }
 
   render() {
     const data = this.props.productData.find(
@@ -32,9 +51,19 @@ export default class Product extends Component {
             <h4>{brand}</h4>
             <h4>{price} 원</h4>
           </div>
-          <input className="product-btn" type="button" value="랜덤 상품 조회" />
-          <input className="product-btn" type="button" value="관심 없음" />
-          <input className="product-btn" type="button" value="최근 본 상품" />
+          <input
+            className="product-btn"
+            type="button"
+            value="랜덤 상품 조회"
+            onClick={this.callRandomProduct}
+          />
+          <input className="product-btn" type="button" value="관심 없음" onClick={this.setIgnore} />
+          <input
+            className="product-btn"
+            type="button"
+            value="최근 본 상품"
+            onClick={this.gotoRecentHistory}
+          />
         </div>
       </div>
     );
