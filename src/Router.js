@@ -22,7 +22,9 @@ class Router extends Component {
   }
 
   addRecentHistory(presentData) {
-    this.setState({ recentProducts: presentData });
+    const newRecentProduct = this.state.recentProducts.filter(item => item.id !== presentData.id);
+    presentData.date = new Date();
+    this.setState({ recentProducts: [...newRecentProduct, presentData] });
   }
 
   render() {

@@ -18,6 +18,7 @@ export default class Product extends Component {
   callRandomProduct() {
     let random = this.getRandomValue();
     const nowProduct = this.props.productData.find(item => item.id === random);
+    nowProduct.ignore = false;
     this.props.addRecentHistory(nowProduct);
     this.props.history.push(`/product/${random}`);
   }
@@ -26,6 +27,7 @@ export default class Product extends Component {
     let random = this.getRandomValue();
 
     const nowProduct = this.props.productData.find(item => item.id === random);
+    nowProduct.ignore = true;
     this.props.addRecentHistory(nowProduct);
     this.props.history.push(`/product/${random}`);
   }
