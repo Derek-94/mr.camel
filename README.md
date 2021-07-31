@@ -13,6 +13,8 @@
 - use Class Component
 - manage data using localStorage or Session Storage
 - only use client resource (do not use other apis)
+  
+  https://www.notion.so/wecode/Assignment-2-2-841c945bcd844cf1813943b0969f6d8b
               
 -----------------------
 #### (3) 팀원별 구현 기능
