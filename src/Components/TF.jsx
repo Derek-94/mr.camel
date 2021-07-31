@@ -1,15 +1,26 @@
+// true false
 import React, { Component } from 'react';
 import mockData from '../data/mockData';
 
-export default class ProductHistory extends Component {
+export default class TF extends Component {
   constructor() {
     super();
     localStorage.setItem('productHistory', JSON.stringify(tmp));
+    //1. 로컬스토리지에서 사용자 히스토리를 가져온다. storage.setItem(keyName, keyValue);
+    // 히스토리에서 내가 필요한 것: (사용자가 본) 브랜드 이름.
 
     this.state = {
       productHistory: JSON.parse(localStorage.getItem('productHistory')) || [],
       allBrand: [],
       checkedBrand: [],
+      //
+      allCheck: true,
+      eachCheck0: false,
+      eachCheck1: false,
+      eachCheck2: false,
+      eachCheck3: false,
+      eachCheck4: false,
+      eachCheck5: false,
     };
   }
 
@@ -29,42 +40,50 @@ export default class ProductHistory extends Component {
   }
 
   // 체크박스 전체 선택
-  handleAllCheck = e => {
-    const { allBrand } = this.state;
-    // 전체 체크하기
-    if (e.target.checked === true) {
+  handleAllCheck = () => {
+    // const { allCheck } = this.state;
+
+    if (this.state.allCheck === true) {
       this.setState({
-        checkedBrand: allBrand,
+        allCheck: false,
+        eachCheck0: false,
+        eachCheck1: false,
+        eachCheck2: false,
+        eachCheck3: false,
+        eachCheck4: false,
+        eachCheck5: false,
       });
-      // 전체 체크 해제
     } else {
       this.setState({
-        checkedBrand: [],
+        allCheck: true,
+        eachCheck0: true,
+        eachCheck1: true,
+        eachCheck2: true,
+        eachCheck3: true,
+        eachCheck4: true,
+        eachCheck5: true,
       });
     }
   };
 
   //  체크박스 브랜드 별 선택
-  handleSingleCheck = e => {
+  handleSingleCheck = (checked, idx) => {
     const { checkedBrand } = this.state;
 
-    // 개별 체크하기
-    if (e.target.checked === true) {
+    if (checked) {
       this.setState({
-        checkedBrand: [...checkedBrand, e.target.value],
+        checkedBrand: [...checkedBrand, idx],
       });
-      // 개별 체크 해제
     } else {
-      const unCheck = e.target.value;
       this.setState({
-        checkedBrand: checkedBrand.filter(el => el !== unCheck),
+        checkedBrand: checkedBrand.filter(el => el !== idx),
       });
     }
   };
 
   render() {
     const { allBrand, productHistory, checkedBrand } = this.state;
-
+    // console./log(checkedBrand);
     return (
       <>
         <h1>사용자 상품 조회 이력</h1>
@@ -73,8 +92,16 @@ export default class ProductHistory extends Component {
             브랜드
             <label className="seletAll">
               <input
-                checked={checkedBrand === allBrand ? true : false}
-                onChange={e => this.handleAllCheck(e)}
+                checked={
+                  this.state.eachCheck0 &&
+                  this.state.eachCheck1 &&
+                  this.state.eachCheck3 &&
+                  this.state.eachCheck4 &&
+                  this.state.eachCheck5
+                    ? false
+                    : true
+                }
+                onClick={this.handleAllCheck}
                 type="checkbox"
                 name="전체"
                 value="전체"
@@ -82,12 +109,11 @@ export default class ProductHistory extends Component {
               전체 브랜드
             </label>
             {allBrand.map((el, idx) => {
-              console.log(`checkedBrand = ${checkedBrand}`);
               return (
                 <label className="seletEach">
                   <input
-                    checked={checkedBrand.includes(allBrand[idx]) ? true : false}
-                    onChange={e => this.handleSingleCheck(e)}
+                    checked={checkedBrand.includes(el.idx) ? true : false}
+                    onChange={e => this.handleSingleCheck(e.target.checked, allBrand.idx)}
                     type="checkbox"
                     name={el}
                     value={el}
@@ -109,8 +135,7 @@ export default class ProductHistory extends Component {
             <option>낮은 가격</option>
           </select>
         </section>
-        {/* checkedBrand */}
-        {productHistory ? (
+        {productHistory && checkedBrand.length > 0 ? (
           <div>
             <h2>여기에 이제 렌더링 할거에요!</h2>
             {productHistory.map(product => (
