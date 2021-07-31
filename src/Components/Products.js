@@ -1,15 +1,11 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
-import mockData from '../data/mockData';
 import './Products.css';
 
 class Products extends Component {
-  constructor(props) {
-    super(props);
-    for (let i = 0; i < mockData.length; i++) {
-      mockData[i].id = i;
-    }
-  }
+  //constructor(props) {
+  //  super(props);
+  //}
 
   render() {
     return (
@@ -21,15 +17,13 @@ class Products extends Component {
           </button>
         </header>
         <section className="container">
-          {mockData.map(data => (
+          {this.props.productData.map(data => (
             <Link
               to={{
                 pathname: `/product/${data.id}`,
-                state: {
-                  data,
-                },
               }}
               key={data.title}
+              id={data.id}
             >
               <article key={data.title}>
                 <div className="product-image">
