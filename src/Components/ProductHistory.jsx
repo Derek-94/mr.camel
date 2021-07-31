@@ -25,6 +25,7 @@ export default class ProductHistory extends Component {
       const brandList = [...brandsArr];
       this.setState({
         allBrand: brandList,
+        checkedBrand: brandList,
       });
     };
     setBrandList();
@@ -133,7 +134,7 @@ export default class ProductHistory extends Component {
             브랜드
             <label className="check_all">
               <input
-                checked={checkedBrand === allBrand ? true : false}
+                checked={checkedBrand.length === allBrand.length ? true : false}
                 onChange={e => this.handleAllCheck(e)}
                 type="checkbox"
                 name="전체"
