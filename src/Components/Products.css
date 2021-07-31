@@ -1,3 +1,17 @@
+header {
+  padding: 3em;
+  position: relative;
+}
+
+button {
+  position: absolute;
+  bottom: 10%;
+  right: 10%;
+  border: none;
+  background-color: rgb(233, 233, 233);
+  padding: 1em;
+}
+
 .container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -6,32 +20,25 @@
   grid-gap: 20px;
 }
 
-h3 {
+h2 {
   text-align: center;
 }
 
-.top {
-  width: 80%;
-  padding: 1em;
-  margin: 0 auto;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.product {
+article {
   height: 25rem;
   display: flex;
   flex-direction: column;
+  color: black;
 }
 
-.product:hover {
+article:hover {
   transform: translateY(-8px);
   transition: all 0.2s linear;
 }
 
 .product-image {
   background-color: rgb(199, 228, 253);
-  height: 65%;
+  height: 16rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,15 +49,15 @@ h3 {
   font-size: 3rem;
 }
 
+h4 {
+  padding-top: 10px;
+}
+
 .product-details {
   height: 35%;
 }
 
-.product-details div {
+.product-details p {
   display: flex;
   justify-content: space-between;
-}
-
-h4 {
-  padding-top: 10px;
 }

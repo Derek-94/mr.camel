@@ -3,34 +3,61 @@ import { Link } from 'react-router-dom';
 import mockData from '../data/mockData';
 import './Products.css';
 
-export class Products extends Component {
+class Products extends Component {
+  constructor(props) {
+    super(props);
+
+    // add id to mockData
+    let iterator = 1;
+    function addIdentifier(target) {
+      target.id = iterator;
+      iterator++;
+    }
+
+    function loop(obj) {
+      for (let i in obj) {
+        let j = obj[i];
+        if (typeof j === 'object') {
+          if (j.length === undefined) {
+            addIdentifier(j);
+          }
+          loop(j);
+        }
+      }
+    }
+
+    loop(mockData);
+  }
+
   render() {
     return (
       <>
-        <h3>전체상품조회</h3>
-        <div class="top">
+        <header>
+          <h2>전체상품조회</h2>
           <button>
             <Link to="/recentList">최근 본 상품</Link>
           </button>
-        </div>
-        <div className="container">
+        </header>
+        <section className="container">
           {mockData.map(data => (
-            <div className="product" key={data.title}>
-              <div className="product-image">
-                <i className="tags icon"></i>
-              </div>
-              <div className="product-details">
-                <h4>{data.title}</h4>
-                <div>
-                  브랜드<span>{data.brand}</span>
+            <Link to={`/product/${data.id}`}>
+              <article key={data.id}>
+                <div className="product-image">
+                  <i className="tags icon"></i>
                 </div>
-                <div>
-                  가격 <span>&#65510; {data.price}</span>
+                <div className="product-details">
+                  <h4>{data.title}</h4>
+                  <p>
+                    브랜드<span>{data.brand}</span>
+                  </p>
+                  <p>
+                    가격 <span>&#65510; {data.price}</span>
+                  </p>
                 </div>
-              </div>
-            </div>
+              </article>
+            </Link>
           ))}
-        </div>
+        </section>
       </>
     );
   }
