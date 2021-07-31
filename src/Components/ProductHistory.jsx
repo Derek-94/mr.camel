@@ -10,6 +10,7 @@ export default class ProductHistory extends Component {
       productHistoryModified: [],
       brandSelected: [],
       ignoreFlag: false,
+      sortValue: 'recent,',
     };
   }
 
@@ -34,8 +35,42 @@ export default class ProductHistory extends Component {
     }
   };
 
+  onChangeSort = e => {
+    const sortTargetValue = e.target.value;
+    const { productHistoryOrigin } = this.state;
+    this.setState({
+      sortValue: sortTargetValue,
+    });
+
+    switch (sortTargetValue) {
+      case 'dateRecent':
+        this.setState({
+          productHistoryModified: productHistoryOrigin.sort(
+            (item1, item2) => item1.date - item2.date,
+          ),
+        });
+        break;
+      case 'priceAscend':
+        this.setState({
+          productHistoryModified: productHistoryOrigin.sort(
+            (item1, item2) => item1.price - item2.price,
+          ),
+        });
+        break;
+      case 'priceDescend':
+        this.setState({
+          productHistoryModified: productHistoryOrigin.sort(
+            (item1, item2) => item2.price - item1.price,
+          ),
+        });
+        break;
+      default:
+        console.log('no default');
+    }
+  };
+
   render() {
-    const { productHistoryOrigin, productHistoryModified } = this.state;
+    const { productHistoryOrigin, productHistoryModified, sortValue } = this.state;
     return (
       <>
         <h1>사용자 상품 조회 이력</h1>
@@ -57,9 +92,10 @@ export default class ProductHistory extends Component {
               관심없는 제품 제외하기
             </label>
           </div>
-          <select>
-            <option>최신순</option>
-            <option>낮은 가격</option>
+          <select value={sortValue} onChange={this.onChangeSort}>
+            <option value="dateRecent">최신순</option>
+            <option value="priceAscend">낮은 가격 순서</option>
+            <option value="priceDescend">높은 가격 순서</option>
           </select>
         </section>
         {productHistoryModified.length ? (
