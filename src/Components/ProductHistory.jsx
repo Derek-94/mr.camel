@@ -12,6 +12,7 @@ export default class ProductHistory extends Component {
       ignoreFlag: false,
       checkedBrand: [],
       allBrand: [],
+      sortValue: 'recent,',
     };
   }
 
@@ -53,6 +54,7 @@ export default class ProductHistory extends Component {
     }
   };
 
+<<<<<<< HEAD
   handleAllCheck = e => {
     const { allBrand, productHistoryOrigin } = this.state;
     if (e.target.checked) {
@@ -85,11 +87,48 @@ export default class ProductHistory extends Component {
       this.setState({
         checkedBrand: checkedBrand.filter(brand => brand !== unCheck),
       });
+=======
+  onChangeSort = e => {
+    const sortTargetValue = e.target.value;
+    const { productHistoryOrigin } = this.state;
+    this.setState({
+      sortValue: sortTargetValue,
+    });
+
+    switch (sortTargetValue) {
+      case 'dateRecent':
+        this.setState({
+          productHistoryModified: productHistoryOrigin.sort(
+            (item1, item2) => item1.date - item2.date,
+          ),
+        });
+        break;
+      case 'priceAscend':
+        this.setState({
+          productHistoryModified: productHistoryOrigin.sort(
+            (item1, item2) => item1.price - item2.price,
+          ),
+        });
+        break;
+      case 'priceDescend':
+        this.setState({
+          productHistoryModified: productHistoryOrigin.sort(
+            (item1, item2) => item2.price - item1.price,
+          ),
+        });
+        break;
+      default:
+        console.log('no default');
+>>>>>>> 8a65526129c2032db65d7284691eba00df0a680f
     }
   };
 
   render() {
+<<<<<<< HEAD
     const { allBrand, checkedBrand, productHistoryOrigin, productHistoryModified } = this.state;
+=======
+    const { productHistoryOrigin, productHistoryModified, sortValue } = this.state;
+>>>>>>> 8a65526129c2032db65d7284691eba00df0a680f
     return (
       <>
         <h1>사용자 상품 조회 이력</h1>
@@ -128,10 +167,17 @@ export default class ProductHistory extends Component {
               관심없는 제품 제외하기
             </label>
           </div>
+<<<<<<< HEAD
 
           <select>
             <option>최신순</option>
             <option>낮은 가격</option>
+=======
+          <select value={sortValue} onChange={this.onChangeSort}>
+            <option value="dateRecent">최신순</option>
+            <option value="priceAscend">낮은 가격 순서</option>
+            <option value="priceDescend">높은 가격 순서</option>
+>>>>>>> 8a65526129c2032db65d7284691eba00df0a680f
           </select>
         </section>
 

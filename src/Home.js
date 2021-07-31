@@ -11,7 +11,7 @@ export default class Home extends Component {
             <Link to="/">홈으로</Link>
           </li>
           <li>
-            <Link to="/">상품 상세 페이지</Link>
+            <Link to="/product">상품 상세 페이지</Link>
           </li>
           <li>
             <Link to="/recentList">상품 조회 이력 페이지</Link>
