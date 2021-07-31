@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import Products from './Components/Products';
 import Product from './Components/Product';
-
+import { getRecentHistory, setRecentHistory } from './utils';
 import Home from './Home';
 import ProductHistory from './Components/ProductHistory';
 import mockData from './data/mockData';
@@ -14,21 +14,22 @@ class Router extends Component {
       mockData[i].id = i;
     }
     this.state = {
-      productData: mockData,
-      recentProducts: [],
+      productData: mockData.filter((_, index) => index < 10),
+      recentProducts: getRecentHistory() || [],
     };
-    console.log('mockData: ', this.state.productData);
     this.addRecentHistory = this.addRecentHistory.bind(this);
   }
 
   addRecentHistory(presentData) {
     const newRecentProduct = this.state.recentProducts.filter(item => item.id !== presentData.id);
     presentData.date = new Date();
-    this.setState({ recentProducts: [...newRecentProduct, presentData] });
+    this.setState(
+      { recentProducts: [...newRecentProduct, presentData] },
+      setRecentHistory(this.state.recentProducts),
+    );
   }
 
   render() {
-    console.log(this.state.productData);
     return (
       <div>
         <Route exact path="/" component={Home} />

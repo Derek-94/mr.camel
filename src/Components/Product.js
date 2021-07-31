@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Product.css';
-import { getProductData, getRandomNumber } from '../utils';
+import { getRandomNumber } from '../utils';
 
 export default class Product extends Component {
   constructor(props) {
@@ -16,24 +16,31 @@ export default class Product extends Component {
   }
 
   callRandomProduct() {
-    this.getNewItem(true);
+    this.getNewItem(false);
   }
 
   getNewItem(isIgnore) {
-    const ignoreList = this.props.recentProducts.filter(item => item.ignore).map(item => item.id);
-    ignoreList.push(this.props.match.params.id);
+    const ignoreList = this.props.recentProducts
+      .filter(item => item.ignore === true)
+      .map(item => item.id);
+    ignoreList.push(parseInt(this.props.match.params.id));
+
     const productList = this.props.productData.filter(
-      item => !ignoreList.find(ignoreItem => ignoreItem.id === item.id),
+      item => !ignoreList.find(ignoreID => ignoreID === item.id),
     );
-    let random = this.getRandomValue(productList.length);
-    const nowProduct = productList[random];
-    nowProduct.ignore = isIgnore;
-    this.props.addRecentHistory(nowProduct);
-    this.props.history.push(`/product/${random}`);
+    if (productList.length === 0) {
+      this.props.history.push(`/product/-1`);
+    } else {
+      let random = this.getRandomValue(productList.length);
+      const nowProduct = productList[random];
+      nowProduct.ignore = isIgnore;
+      this.props.addRecentHistory(nowProduct);
+      this.props.history.push(`/product/${nowProduct.id}`);
+    }
   }
 
   setIgnore() {
-    this.getNewItem(false);
+    this.getNewItem(true);
   }
 
   gotoRecentHistory() {
@@ -45,8 +52,6 @@ export default class Product extends Component {
       item => item.id === parseInt(this.props.match.params.id),
     );
     const { title, brand, price, id } = data;
-    console.log(this.props.match.params.id);
-    console.log(this.props.productData);
     return (
       <div className="content-container">
         <div className="product-img"></div>
