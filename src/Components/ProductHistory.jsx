@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import mockData from '../data/mockData';
 
+import './productHistory.css';
+import './Products.css';
+
 export default class ProductHistory extends Component {
   constructor() {
     super();
@@ -89,6 +92,7 @@ export default class ProductHistory extends Component {
       });
     }
   };
+
   onChangeSort = e => {
     const sortTargetValue = e.target.value;
     const { productHistoryOrigin } = this.state;
@@ -128,10 +132,12 @@ export default class ProductHistory extends Component {
       this.state;
     return (
       <>
-        <h1>사용자 상품 조회 이력</h1>
+        <header>
+          <h2>사용자 상품 조회 이력</h2>
+        </header>
         <section>
           <div className="check_brand">
-            브랜드
+            <h4>브랜드 선택</h4>
             <label className="check_all">
               <input
                 checked={checkedBrand.length === allBrand.length ? true : false}
@@ -139,8 +145,9 @@ export default class ProductHistory extends Component {
                 type="checkbox"
                 name="전체"
                 value="전체"
+                style={{ marginRight: '5px' }}
               />
-              전체 브랜드
+              전체
             </label>
             {allBrand.map((el, idx) => {
               return (
@@ -151,59 +158,85 @@ export default class ProductHistory extends Component {
                     type="checkbox"
                     name={el}
                     value={el}
+                    style={{ marginRight: '5px' }}
                   />
                   {el}
                 </label>
               );
             })}
           </div>
-
-          <div>
+          <br />
+          <div className="filter-others">
             <label>
-              <input onClick={this.onClickIgnoreBox} type="checkbox" name="ignore" value="ignore" />
+              <input
+                style={{ margin: '0.5rem 5px 0 0' }}
+                onClick={this.onClickIgnoreBox}
+                type="checkbox"
+                name="ignore"
+                value="ignore"
+              />
               관심없는 제품 제외하기
             </label>
+            <select className="sort-option" value={sortValue} onChange={this.onChangeSort}>
+              <option value="dateRecent">최신순</option>
+              <option value="priceAscend">낮은 가격 순서</option>
+              <option value="priceDescend">높은 가격 순서</option>
+            </select>
           </div>
-          <select value={sortValue} onChange={this.onChangeSort}>
-            <option value="dateRecent">최신순</option>
-            <option value="priceAscend">낮은 가격 순서</option>
-            <option value="priceDescend">높은 가격 순서</option>
-          </select>
         </section>
-
+        {console.log(productHistoryModified)}
         {productHistoryModified.length ? (
-          <div>
-            <h2>상품</h2>
+          <section className="container">
             {productHistoryModified.map((product, index) => {
               return (
                 checkedBrand.includes(product.brand) && (
-                  <div key={index} style={{ margin: '1rem 0' }}>
-                    <div>상품명: {product.title}</div>
-                    <div>브랜드: {product.brand}</div>
-                    <div>가격: {product.price}</div>
-                    <div>{product.ignore ? `관심없음` : `관심있음`}</div>
-                    <hr />
-                  </div>
+                  <article key={product.title}>
+                    <div className="product-image">
+                      <i className="tags icon"></i>
+                    </div>
+                    <div className="product-details">
+                      <h4>{product.title}</h4>
+                      <p>
+                        브랜드<span>{product.brand}</span>
+                      </p>
+                      <p>
+                        가격 <span>&#65510; {product.price}</span>
+                      </p>
+                    </div>
+                  </article>
+                  // <div key={index} style={{ margin: '1rem 0' }}>
+                  //   <div>상품명: {product.title}</div>
+                  //   <div>브랜드: {product.brand}</div>
+                  //   <div>가격: {product.price}</div>
+                  //   <div>{product.ignore ? `관심없음` : `관심있음`}</div>
+                  //   <hr />
+                  // </div>
                 )
               );
             })}
-          </div>
+          </section>
         ) : (
           ``
         )}
         {productHistoryOrigin.length && !productHistoryModified.length ? (
-          <div>
-            <h2>상품</h2>
+          <section className="container">
             {productHistoryOrigin.map((product, index) => (
-              <div key={index} style={{ margin: '1rem 0' }}>
-                <div>상품명: {product.title}</div>
-                <div>브랜드: {product.brand}</div>
-                <div>가격: {product.price}</div>
-                <div>{product.ignore ? `관심없음` : `관심있음`}</div>
-                <hr />
-              </div>
+              <article key={product.title}>
+                <div className="product-image">
+                  <i className="tags icon"></i>
+                </div>
+                <div className="product-details">
+                  <h4>{product.title}</h4>
+                  <p>
+                    브랜드<span>{product.brand}</span>
+                  </p>
+                  <p>
+                    가격 <span>&#65510; {product.price}</span>
+                  </p>
+                </div>
+              </article>
             ))}
-          </div>
+          </section>
         ) : (
           !productHistoryModified.length && <h2>사용자가 아무것도 보질 않았어요!</h2>
         )}

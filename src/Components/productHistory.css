@@ -1,0 +1,21 @@
+.check_each,
+.check_all {
+  margin: 0 1rem;
+}
+
+.check_all {
+  margin-left: 0rem;
+}
+
+.sort-option {
+  float: right;
+}
+
+.check_brand,
+.filter-others {
+  margin: 0 10%;
+}
+
+.filter-others {
+  margin-bottom: 1.5rem;
+}
