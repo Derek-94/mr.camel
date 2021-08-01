@@ -27,13 +27,6 @@
 ![ezgif com-gif-maker (4)](https://user-images.githubusercontent.com/74811374/127755589-2ec37d3b-24d6-44af-bf54-b2a735f84a73.gif)
 
 
-
-#### 윤수진 
-- pruduct page 
-- 랜덤 조회, 관심 없음, 최근 본 상품 페이지 연결
-<img width="830" alt="스크린샷 2021-08-01 오전 9 36 56" src="https://user-images.githubusercontent.com/74811374/127755519-6f9e6929-d5b0-4d84-8194-1d0cccc70062.png">
-
-
 #### 조재완 
 - product page
 - 제품 id를 이용하여 product page-> pruduct page 라우팅 구현
